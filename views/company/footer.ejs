@@ -1,0 +1,162 @@
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+  // Load staff profile dynamically
+  $.ajax({
+    url: '/profile_data',
+    dataType: 'json'
+  }).done(function(data) {
+    $('#staffName').text(data.staff.staff_name);
+    $('#staffPhoto').attr('src', '/images/' + data.staff.staff_photo);
+  });
+</script>
+
+<style>
+/* ===== COMPANY FOOTER (MATCH NAVBAR THEME) ===== */
+.company-footer {
+  background-color: #ffffff;
+  color: #555;
+  padding: 2rem 0 1rem;
+
+  margin-top: 10px;
+  border-top: 1px solid #9b9696;
+  margin-bottom: 0px;
+}
+
+.company-footer h5 {
+  color: var(--primary);
+  font-weight: 400 !important;
+  margin-bottom: 1.2rem;
+}
+
+.company-footer p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.footer-brand {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.footer-brand i {
+  color: var(--primary);
+  margin-right: 6px;
+}
+
+.footer-links a {
+  display: block;
+  color: #555;
+  text-decoration: none;
+  margin-bottom: 8px;
+  transition: 0.3s;
+}
+
+.footer-links a:hover {
+  color: blue;
+  padding-left: 6px;
+}
+
+.social-icons a {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  color: #0505e9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  background-color: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  transform: translateY(-3px);
+}
+
+.footer-bottom {
+  border-top: 1px solid #eee;
+  margin-top: 2rem;
+  padding-top: 0.1rem;
+  font-size: 14px;
+  color: #777;
+}
+
+.footer-bottom a {
+  color: #555;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  color: var(--primary);
+}
+</style>
+
+<footer class="company-footer">
+  <div class="container">
+    <div class="row">
+
+      <!-- Brand -->
+      <div class="col-lg-4 mb-4">
+        <a href="#" class="footer-brand d-block mb-2">
+          <i class="fas fa-hospital"></i> <span class="text-primary">Job</span><span>Hyre</span>
+
+        </a>
+        <p>
+          JobHyre connects professionals with the right opportunities using a smart and simple hiring platform.
+        </p>
+
+        <!-- Social Media -->
+        <div class="social-icons mt-3">
+          <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-lg-4 mb-4">
+        <h5 class="fw-bolder">Quick Links</h5>
+        <div class="footer-links ">
+          <a href="/company">Dashboard</a>
+          <a href="/company/company_profile">Company Profile</a>
+          <a href="/company/post_new_jobs">Post New Jobs</a>
+          <a href="/company/view_post_jobs">View Jobs</a>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-lg-4 mb-4">
+        <h5>Contact</h5>
+        <p><i class="fas fa-envelope me-2 text-primary"></i> support@medicare.com</p>
+        <p><i class="fas fa-phone me-2 text-primary"></i> +91 98765 43210</p>
+        <p><i class="fas fa-map-marker-alt me-2 text-primary"></i>Ahilyanagar Maharashtra, India</p>
+      </div>
+
+    </div>
+
+    <!-- Bottom -->
+    <div class="footer-bottom d-flex justify-content-between flex-wrap  fw-bolder">
+      <span>
+        © <span id="year"></span> JobHyre. All rights reserved. by Vaibhav Garad
+      </span>
+      <span>
+        <a href="#">Privacy Policy</a> · <a href="#">Terms</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").innerText = new Date().getFullYear();
+</script>
+
+</body>
+</html>

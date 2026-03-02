@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify OTP</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f4f6f9;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 15px; /* Mobile safety */
+    }
+
+    .otp-card {
+      width: 100%;
+      max-width: 420px;
+      border: none;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      background: #fff;
+    }
+
+    .otp-header {
+      text-align: center;
+      padding: 25px 20px 10px;
+    }
+
+    .otp-header i {
+      font-size: 48px;
+      color: #1cc88a;
+    }
+
+    .otp-header h4 {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .form-control {
+      height: 48px;
+      border-radius: 10px;
+      font-size: 18px;
+      letter-spacing: 4px;
+    }
+
+    .btn-success {
+      height: 48px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .resend-link {
+      font-size: 14px;
+    }
+
+    /* 📱 Mobile (small screens) */
+    @media (max-width: 576px) {
+      .otp-header i {
+        font-size: 38px;
+      }
+
+      .otp-header h4 {
+        font-size: 20px;
+      }
+
+      .form-control {
+        font-size: 16px;
+        letter-spacing: 3px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card otp-card">
+    <div class="otp-header">
+      <i class="bi bi-key-fill"></i>
+      <h4>Verify OTP</h4>
+      <p class="text-muted mb-0">
+        Enter the OTP sent to your registered email
+      </p>
+    </div>
+
+    <div class="card-body p-4">
+      <form action="/verify_employee_otp" method="POST">
+
+        <!-- OTP Input -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">OTP</label>
+          <input
+            type="text"
+            name="otp"
+            class="form-control text-center"
+            placeholder="Enter OTP"
+            maxlength="6"
+            inputmode="numeric"
+            required
+          >
+        </div>
+
+        <!-- Verify Button -->
+        <button type="submit" class="btn btn-success w-100">
+          Verify OTP
+        </button>
+
+        <!-- Resend -->
+        <div class="text-center mt-4 resend-link">
+          <a href="/resend_employee_otp" class="text-decoration-none">
+            Didn’t receive OTP? Resend
+          </a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,449 @@
+<%- include('navbar.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Company Profile | <%= company.company_name %></title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #e67e22;
+      --light: #f8f9fa;
+      --dark: #2c3e50;
+      --gray: #6c757d;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --border-radius: 12px;
+      --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 30px 15px;
+    }
+
+    .form-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    /* Header Section */
+    .form-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #34495e 100%);
+      color: #fff;
+      padding: 40px;
+      text-align: center;
+      border-bottom: 4px solid var(--accent);
+    }
+
+    .form-header h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .form-header p {
+      font-size: 16px;
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    /* Logo Section */
+    .logo-section {
+      padding: 30px 40px;
+      background: #f8f9fa;
+      border-bottom: 1px solid #eaeaea;
+      text-align: center;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo-preview {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 4px solid rgba(44, 62, 80, 0.2);
+      object-fit: cover;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      transition: var(--transition);
+      background-color: #fff;
+      padding: 5px;
+    }
+
+    .logo-preview:hover {
+      transform: scale(1.05);
+      border-color: var(--accent);
+    }
+
+    .logo-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-upload label {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    .file-input-wrapper input[type=file] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .file-input-button {
+      background: #3498db;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .file-input-button:hover {
+      background: #2980b9;
+    }
+
+    /* Form Section */
+    .form-section {
+      padding: 40px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 0;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: block;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      font-size: 15px;
+      transition: var(--transition);
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    }
+
+    .form-control:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
+    }
+
+    .form-control:disabled {
+      background-color: #f8f9fa;
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .form-note {
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* Button Section */
+    .button-section {
+      padding: 30px 40px;
+      background: #f8f9fa;
+      border-top: 1px solid #eaeaea;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #d35400;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(230, 126, 34, 0.4);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(108, 117, 125, 0.4);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .form-header, .logo-section, .form-section, .button-section {
+        padding: 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .form-header, .logo-section, .form-section, .button-section {
+        padding: 25px 20px;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .button-section {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <!-- HEADER -->
+    <div class="form-header">
+      <h2>Edit Company Profile</h2>
+      <p>Update your company information and details</p>
+    </div>
+
+    <!-- FORM SECTION -->
+    <form action="/company/update_company_profile" method="post" enctype="multipart/form-data">
+      <!-- LOGO SECTION -->
+      <div class="logo-section">
+        <div class="logo-container">
+          <img src="/company_logo/<%= company.company_logo ? company.company_logo : 'default.jpg' %>" 
+               alt="Company Logo" class="logo-preview" id="logoPreview">
+<!--           
+          <div class="logo-upload">
+            <label for="company_logo">Update Company Logo</label>
+            <div class="file-input-wrapper">
+              <button type="button" class="file-input-button">
+                <i class="fas fa-upload"></i> Choose File
+              </button> -->
+        <!-- </div> -->
+        <div class="form-group">
+          <label class="form-label" for="company_logo">Company Logo</label>
+              <input type="file" name="company_logo" id="company_logo" accept="image/*" class="bg-succes">
+            <span class="form-note">Recommended: Square image, 300x300px or larger</span>
+          </div>
+        </div>
+      </div>
+      
+
+      <div class="form-section">
+        <div class="form-grid">
+          <!-- Company Information -->
+          <div class="form-group">
+            <label class="form-label" for="company_name">Company Name</label>
+            <input type="text" class="form-control" name="company_name" id="company_name" value="<%= company.company_name %>" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="company_location">Company Location</label>
+            <input type="text" class="form-control" name="company_location" id="company_location" value="<%= company.company_location %>" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="company_type">Company Type</label>
+            <input type="text" class="form-control" name="company_type" id="company_type" value="<%= company.company_type %>" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="industry">Industry</label>
+            <input type="text" class="form-control" name="industry" id="industry" value="<%= company.industry %>" required>
+          </div>
+
+          <!-- HR Information -->
+          <div class="form-group">
+            <label class="form-label" for="hr_name">HR Name</label>
+            <input type="text" class="form-control" name="hr_name" id="hr_name" value="<%= company.hr_name %>" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="hr_designation">HR Designation</label>
+            <input type="text" class="form-control" name="hr_designation" id="hr_designation" value="<%= company.hr_designation %>" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="hr_mobile">HR Mobile</label>
+            <input type="text" class="form-control" name="hr_mobile" id="hr_mobile" value="<%= company.hr_mobile %>" required>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="form-group">
+            <label class="form-label" for="company_email">Company Email</label>
+            <input type="email" class="form-control" name="company_email" id="company_email" value="<%= company.company_email %>" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="website_url">Website URL</label>
+            <input type="url" class="form-control" name="website_url" id="website_url" value="<%= company.website_url %>" placeholder="https://example.com">
+          </div>
+
+          <!-- Password Section -->
+          <div class="form-group">
+            <label class="form-label" for="status">Company Status</label>
+            <input type="text" class="form-control" name="status" id="status" value="<%= company.status %>" required>
+            <span class="form-note">Current company status</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUTTONS -->
+      <div class="button-section">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> Update Profile
+        </button>
+        <a href="/company/company_profile" class="btn btn-secondary">
+          <i class="fas fa-times"></i> Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Logo preview functionality
+      const logoInput = document.getElementById('company_logo');
+      const logoPreview = document.getElementById('logoPreview');
+      
+      logoInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          
+          reader.addEventListener('load', function() {
+            logoPreview.setAttribute('src', this.result);
+          });
+          
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      // Form validation
+      const form = document.querySelector('form');
+      form.addEventListener('submit', function(e) {
+        let isValid = true;
+        const requiredFields = form.querySelectorAll('input[required]');
+        
+        requiredFields.forEach(field => {
+          if (!field.value.trim()) {
+            isValid = false;
+            field.style.borderColor = 'var(--danger)';
+          } else {
+            field.style.borderColor = '';
+          }
+        });
+        
+        if (!isValid) {
+          e.preventDefault();
+          alert('Please fill in all required fields');
+        }
+      });
+      
+      // Add input focus effects
+      const inputs = document.querySelectorAll('.form-control');
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+          this.parentElement.classList.remove('focused');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+<%- include('footer.ejs') %>

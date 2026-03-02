@@ -1,0 +1,740 @@
+<%- include('navbar.ejs') %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobHyre - Find Jobs. Hire Talent. All in One Place.</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #475569;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #e2e8f0;
+            --gray-light: #f1f5f9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: var(--dark);
+            background-color: white;
+            line-height: 1.6;
+            
+
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+
+       margin-top: 0; /* Remove top margin */
+    padding: 80px 0; /* Keep original padding */
+background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+        }   
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .hero h2 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-box {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+            border: 2px solid var(--gray);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Dual Card Section */
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .dual-cards {
+            display: flex;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            flex: 1;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .job-seeker .card-icon {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+
+        .employer .card-icon {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .benefit-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .benefit-list li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .benefit-list i {
+            color: var(--success);
+            margin-top: 5px;
+        }
+
+        /* How It Works */
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: var(--border-radius);
+            background-color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        /* Features */
+        .features {
+            background-color: var(--gray-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background-color: rgba(37, 99, 235, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: var(--primary);
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        /* Placeholder Sections */
+        .placeholder-section {
+            margin-top: 50px;
+        }
+
+        .placeholder-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        .placeholder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .placeholder-item {
+            background-color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .placeholder-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background-color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary);
+            font-size: 24px;
+        }
+
+        .placeholder-text h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .placeholder-text p {
+            color: var(--secondary);
+            font-size: 14px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 10px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-light {
+            background-color: var(--gray-light);
+            color: var(--dark);
+        }
+
+        .btn-light:hover {
+            background-color: var(--gray);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .dual-cards {
+                flex-direction: column;
+            }
+            
+            .hero h1 {
+                font-size: 40px;
+            }
+            
+            .hero h2 {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero h2 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-input {
+                min-width: 100%;
+            }
+            
+            .section-title {
+                font-size: 30px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+                 .back-to-top {
+            position: absolute;
+            right: 20px;
+            top: -20px;
+            background-color: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+        }
+       
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container mb-5">
+            <div class="hero-content">
+                <h1>Welcome to <span class="text-dark">Job</span><span class="text-primary">Hyre</span></h1>
+                <h2>Find Jobs. Hire Talent. All in One Place.</h2>
+                <p  style="font-size: 20px;">Join thousands of job seekers and employers who trust JobHyre for their career and hiring needs. Start your journey today.</p>
+                
+                
+                
+                <div style="margin-top: 30px; font-size: 14px; color: var(--secondary);">
+                    Popular searches: Software Engineer, Marketing Manager, Data Analyst, Remote, UX Designer
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dual Card Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Designed For Everyone</h2>
+            <p class="section-subtitle">JobHyre provides a seamless experience for both job seekers and employers with powerful tools tailored to your needs.</p>
+            
+            <div class="dual-cards">
+                <!-- Job Seekers Card -->
+                <div class="card job-seeker">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3 class="card-title">For Job Seekers</h3>
+                    </div>
+                    
+                    <ul class="benefit-list">
+                        <li><i class="fas fa-check-circle"></i> Access thousands of verified job listings</li>
+                        <li><i class="fas fa-check-circle"></i> Get matched with opportunities that fit your skills</li>
+                        <li><i class="fas fa-check-circle"></i> Receive alerts for new job postings</li>
+                        <li><i class="fas fa-check-circle"></i> Track applications in one dashboard</li>
+                    </ul>
+                    
+                    <a href="#" class="btn btn-primary" style="width: 100%;">Find Your Dream Job</a>
+                </div>
+                
+                <!-- Employers Card -->
+                <div class="card employer">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3 class="card-title">For Employers</h3>
+                    </div>
+                    
+                    <ul class="benefit-list">
+                        <li><i class="fas fa-check-circle"></i> Post jobs and reach qualified candidates</li>
+                        <li><i class="fas fa-check-circle"></i> Advanced filtering to find the perfect match</li>
+                        <li><i class="fas fa-check-circle"></i> Manage applications and interviews</li>
+                        <li><i class="fas fa-check-circle"></i> Access to premium talent analytics</li>
+                    </ul>
+                    
+                    <a href="#" class="btn btn-primary" style="width: 100%; background-color: var(--success); border-color: var(--success);">Post a Job</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section" style="background-color: var(--gray-light);">
+        <div class="container">
+            <h2 class="section-title">How  <span class="text-dark">Job</span><span class="text-primary">Hyre</span> Works</h2>
+            <p class="section-subtitle">Get started in just a few simple steps and unlock opportunities.</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Create Your Profile</h3>
+                    <p>Sign up and build your professional profile with skills, experience, and preferences.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Search & Match</h3>
+                    <p>Our smart algorithm matches you with relevant jobs or candidates based on your profile.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Connect & Communicate</h3>
+                    <p>Reach out, schedule interviews, and communicate directly through our secure platform.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Hire or Get Hired</h3>
+                    <p>Complete the process and start your new job or welcome your new team member.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features">
+        <div class="container">
+            <h2 class="section-title">Why Choose  <span class="text-dark">Job</span><span class="text-primary">Hyre</span>?</h2>
+            <p class="section-subtitle">Our platform is built with cutting-edge technology to ensure the best experience for all users.</p>
+            
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Secure Platform</h3>
+                    <p>Your data is protected with enterprise-grade security and encryption.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+<i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3 class="feature-title">Verified Profiles</h3>
+                    <p>All profiles and job listings go through a verification process for authenticity.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Matching</h3>
+                    <p>Advanced algorithms match the right candidates with the right opportunities.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="feature-title">Easy Hiring Process</h3>
+                    <p>Streamlined tools to make hiring and job searching efficient and effective.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+ <a href="#" class="back-to-top" aria-label="Back to top">
+                <i class="fas fa-arrow-up"></i>
+            </a>
+  
+
+    <!-- Top Companies Placeholder -->
+    <section class="section" style="background-color: var(--gray-light);">
+        <div class="container">
+            <h2 class="section-title">Top Companies Hiring</h2>
+            <p class="section-subtitle">Join leading organizations that trust JobHyre for their hiring needs.</p>
+            
+            <div class="placeholder-section">
+                <div class="placeholder-grid">
+                    <div class="placeholder-item">
+                        <div class="placeholder-logo">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="placeholder-text">
+                            <h4>TechCorp Inc.</h4>
+                            <p>24 open positions • Technology</p>
+                        </div>
+                    </div>
+                    
+                    <div class="placeholder-item">
+    <div class="placeholder-logo">
+        <i class="fas fa-graduation-cap"></i>
+    </div>
+    <div class="placeholder-text">
+        <h4>EduNext Academy</h4>
+        <p>10 open positions • Education</p>
+    </div>
+</div>
+
+<div class="placeholder-item">
+    <div class="placeholder-logo">
+        <i class="fas fa-truck"></i>
+    </div>
+    <div class="placeholder-text">
+        <h4>LogiMove Solutions</h4>
+        <p>8 open positions • Logistics</p>
+    </div>
+</div>
+
+
+                    <div class="placeholder-item">
+                        <div class="placeholder-logo">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <div class="placeholder-text">
+                            <h4>Retail Giants</h4>
+                            <p>18 open positions • Retail</p>
+                        </div>
+                    </div>
+                    
+                    <div class="placeholder-item">
+                        <div class="placeholder-logo">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="placeholder-text">
+                            <h4>HealthPlus Systems</h4>
+                            <p>15 open positions • Healthcare</p>
+                        </div>
+                    </div>
+                    
+                    <div class="placeholder-item">
+                        <div class="placeholder-logo">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="placeholder-text">
+                            <h4>FinanceSecure</h4>
+                            <p>12 open positions • Finance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Your Career or Hiring Process?</h2>
+            <p>Join thousands of professionals and companies already using JobHyre to find the perfect match. Whether you're looking for your next opportunity or your next team member, we're here to help.</p>
+            
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-light">Join as a Candidate</a>
+                <a href="#" class="btn btn-outline" style="color: white; border-color: white;">Join as an Employer</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Search functionality placeholder
+        document.querySelector('.search-box .btn-primary').addEventListener('click', function() {
+            const jobInput = document.querySelector('.search-input:nth-child(1)').value;
+            const locationInput = document.querySelector('.search-input:nth-child(2)').value;
+            
+            if (!jobInput && !locationInput) {
+                alert('Please enter a job title, skill, or location to search.');
+            } else {
+                alert(`Searching for "${jobInput || 'any job'}" in "${locationInput || 'any location'}"...\n\nThis is a design demo. In a real application, this would redirect to search results.`);
+            }
+        });
+    </script>
+</body>
+</html>
+
+<%- include('footer.ejs') %>

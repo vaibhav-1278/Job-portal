@@ -1,0 +1,566 @@
+<%-include('navbar.ejs')%>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status Dashboard</title>
+
+    <!-- IMPORTANT: Chart.js MUST LOAD FIRST -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --light-blue: #3b82f6;
+            --pending: #f59e0b;
+            --shortlisted: #3b82f6;
+            --selected: #10b981;
+            --rejected: #ef4444;
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            padding-bottom: 60px;
+            color: var(--text-dark);
+        }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            margin-top: 4%;
+        }
+
+        /* Header Section */
+        .dashboard-header {
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .dashboard-title {
+            font-size: 1.7rem;
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+     
+        /* Stats Cards Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            height: 200px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 90%;
+            height: 4px;
+        }
+
+        .stat-card.pending .card-top-bar {
+            background: linear-gradient(90deg, var(--pending), #fbbf24);
+        }
+
+        .stat-card.shortlisted .card-top-bar {
+            background: linear-gradient(90deg, var(--shortlisted), #60a5fa);
+        }
+
+        .stat-card.selected .card-top-bar {
+            background: linear-gradient(90deg, var(--selected), #34d399);
+        }
+
+        .stat-card.rejected .card-top-bar {
+            background: linear-gradient(90deg, var(--rejected), #f87171);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .stat-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            
+            color: var(--text-dark);
+            letter-spacing: -0.01em;
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .stat-card.pending .stat-icon {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--pending);
+        }
+
+        .stat-card.shortlisted .stat-icon {
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--shortlisted);
+        }
+
+        .stat-card.selected .stat-icon {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--selected);
+        }
+
+        .stat-card.rejected .stat-icon {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--rejected);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            margin-left: 10px;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-card.pending .stat-number {
+            color: var(--pending);
+        }
+
+        .stat-card.shortlisted .stat-number {
+            color: var(--shortlisted);
+        }
+
+        .stat-card.selected .stat-number {
+            color: var(--selected);
+        }
+
+        .stat-card.rejected .stat-number {
+            color: var(--rejected);
+        }
+
+        .stat-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .stat-decoration {
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            width: 150px;
+            height: 150px;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        /* Recent Applications Section */
+        .recent-applications {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 35px;
+            margin-top: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i {
+            color: var(--light-blue);
+        }
+
+        .view-all-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--light-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .view-all-link:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateX(4px);
+        }
+
+        /* Table Styling */
+        .applications-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        .table-header th {
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .table-row {
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .table-row:hover {
+            background: #f8fafc;
+        }
+
+        .table-row td {
+            padding: 20px;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--pending);
+        }
+
+        .status-shortlisted {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--shortlisted);
+        }
+
+        .status-selected {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--selected);
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--rejected);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--light-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 20px 15px;
+            }
+            
+            .dashboard-title {
+                margin-top: 10%!important;
+                font-size: 1.4rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .stat-card {
+                padding: 10px;
+            }
+            
+            .recent-applications {
+                padding: 25px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .applications-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-title {
+                font-size: 1.8rem;
+            }
+            
+            .stat-number {
+                font-size: 1rem !important;
+            }
+            
+            .stat-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.5rem;
+            }
+            
+            .table-header th,
+            .table-row td {
+                padding: 15px 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Application Status Dashboard</h1>
+           
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <!-- Pending Card -->
+            <div class="stat-card pending">
+                <div class="card-top-bar"></div>
+                <div class="stat-header">
+                    <h3 class="stat-title">Pending Review</h3>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-number"><%= result.pending_count %></div>
+                <p class="stat-description">Applications awaiting initial evaluation</p>
+                <div class="stat-decoration">
+                    <i class="fas fa-clock fa-5x"></i>
+                </div>
+            </div>
+
+            <!-- Shortlisted Card -->
+            <div class="stat-card shortlisted">
+                <div class="card-top-bar"></div>
+                <div class="stat-header">
+                    <h3 class="stat-title">Shortlisted</h3>
+                    <div class="stat-icon">
+                        <i class="fas fa-list-check"></i>
+                    </div>
+                </div>
+                <div class="stat-number"><%= result.shortlisted_count %></div>
+                <p class="stat-description">Candidates qualified for next round</p>
+                <div class="stat-decoration">
+                    <i class="fas fa-list-check fa-5x"></i>
+                </div>
+            </div>
+
+            <!-- Rejected Card -->
+            <div class="stat-card rejected">
+                <div class="card-top-bar"></div>
+                <div class="stat-header">
+                    <h3 class="stat-title">Rejected</h3>
+                    <div class="stat-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                </div>
+                <div class="stat-number">
+                    <a  style="color: inherit; text-decoration: none;">
+                        <%= result.rejected_count %>
+                    </a>
+                </div>
+                <p class="stat-description">Applications not proceeding further</p>
+                <div class="stat-decoration">
+                    <i class="fas fa-times-circle fa-5x"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Applications Section -->
+        <div class="recent-applications">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-file-alt"></i>
+                    Recent Applications
+                </h2>
+             
+            </div>
+
+            <% if (data && data.length > 0) { %>
+                <div class="table-container">
+                    <table class="applications-table">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Position</th>
+                                <th>Contact</th>
+                                <th>Applied Date</th>
+                                <th>Status</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                       <tbody>
+<% for(var i=0; i<data.length; i++){ %>
+<tr class="table-row">
+    <td class="border px-4 py-2"><%= data[i].applicant_name %></td>
+    <td class="border px-4 py-2"><%= data[i].job_title %></td>
+    <td class="border px-4 py-2"><%= data[i].applicant_email %></td>
+    <td class="border px-4 py-2">
+        <%= new Date(data[i].applied_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+    </td>
+    <td class="border px-4 py-2">
+        <% if(data[i].application_status.toLowerCase() === 'pending'){ %>
+            <a href="/company/shortlist_applicant/<%=data[i].application_id%>" class="btn btn-sm btn-primary rounded-pill px-3">Shortlist</a>
+            <a href="/company/reject_applicant/<%=data[i].application_id%>" class="btn btn-sm btn-danger rounded-pill px-3 ms-2">Reject</a>
+        <% } else if(data[i].application_status.toLowerCase() === 'shortlisted'){ %>
+            <span class="status-badge status-shortlisted">Shortlisted</span>
+        <% } else if(data[i].application_status.toLowerCase() === 'rejected'){ %>
+            <span class="status-badge status-rejected">Rejected</span>
+        <% } %>
+    </td>
+    <td class="border px-4 py-2">
+   <a href="/employee_resume/<%= data[i].applicant_resume_file %>" view
+                                   class="btn btn-sm btn-outline-success rounded-pill px-3">
+                                      <i class="fas fa-eye"></i> View
+                                </a>
+
+
+    </td>
+</tr>
+<% } %>
+</tbody>
+
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="empty-state">
+                    <i class="fas fa-inbox fa-3x"></i>
+                    <h3>No Applications Yet</h3>
+                    <p>Applications will appear here once candidates start applying to your positions.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<%-include('footer.ejs')%>

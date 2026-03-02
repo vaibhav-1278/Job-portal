@@ -1,0 +1,10 @@
+<%-include('navbar.ejs')%>
+<h1>login here</h1>
+<form action="/employee_login" method="post">
+    Enter Email
+    <input type="email" name="employee_email" id=""><br><br>
+    Enter Password
+    <input type="password" name="employee_password" id=""><br><br>
+    <input type="submit" value="Login">
+</form>
+<%-include('footer.ejs')%>

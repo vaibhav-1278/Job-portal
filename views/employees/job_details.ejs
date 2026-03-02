@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= job.job_title %> | Job Details</title>
+
+  <!-- Bootstrap + Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <style>
+    /* ------------------------------ */
+    /*        GLOBAL STYLING          */
+    /* ------------------------------ */
+    body {
+      background-color: #f5f7fb;
+      font-family: 'Poppins', sans-serif;
+      color: #2c3e50;
+      overflow-x: hidden;
+    }
+
+    .job-card {
+      max-width: 1050px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 40px 45px;
+      border-radius: 18px;
+      border: 1px solid #e8eaef;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+      transition: 0.3s ease;
+    }
+
+    .job-card:hover {
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+    }
+
+
+    /* ------------------------------ */
+    /*        HEADER SECTION          */
+    /* ------------------------------ */
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .company-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .company-logo {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid #dcdcdc;
+      background: #fafafa;
+    }
+
+    .job-title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #1c1f26;
+    }
+
+    .company-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0d6efd;
+    }
+
+    .location-text {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+
+    .status-badge {
+      background: #e9f7ef;
+      padding: 0.45rem 1rem;
+      color: #198754;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+
+    /* ------------------------------ */
+    /*        CONTENT SECTION         */
+    /* ------------------------------ */
+
+    .section-title {
+      margin-top: 35px;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #343a40;
+      border-left: 4px solid #0d6efd;
+      padding-left: 10px;
+    }
+
+    .desc-box {
+      background: #f8f9fa;
+      padding: 18px;
+      border-radius: 10px;
+      border: 1px solid #ececec;
+      line-height: 1.7;
+      color: #555;
+      margin-top: 12px;
+    }
+
+    .info-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 15px;
+    }
+
+    .info-item {
+      background: #fff;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 1px solid #e8eaef;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: 0.3s ease;
+    }
+
+    .info-item:hover {
+      background: #f1f3f5;
+    }
+
+    .info-icon {
+      color: #0d6efd;
+      font-size: 1.4rem;
+    }
+
+
+    /* ------------------------------ */
+    /*       SKILLS TAG STYLING       */
+    /* ------------------------------ */
+
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .skill-tag {
+      padding: 7px 16px;
+      background: #e7f1ff;
+      border-radius: 20px;
+      font-weight: 500;
+      color: #0d6efd;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      border: 1px solid #d0e3ff;
+    }
+
+
+    /* ------------------------------ */
+    /*    COMPANY INFO BOX SECTION    */
+    /* ------------------------------ */
+
+    .company-info-card {
+      margin-top: 18px;
+      background: #f8f9fa;
+      border: 1px solid #e8eaef;
+      padding: 18px;
+      border-radius: 10px;
+    }
+
+
+    /* ------------------------------ */
+    /*       ACTION BUTTONS           */
+    /* ------------------------------ */
+
+    .action-buttons {
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn-back,
+    .btn-apply {
+      padding: 10px 25px;
+      font-weight: 600;
+      border-radius: 30px;
+    }
+
+    .btn-back {
+      background: #dde2e6;
+      color: #000;
+    }
+
+    .btn-back:hover {
+      background: #cfd4da;
+    }
+
+    .btn-apply {
+      background: #0d6efd;
+      color: #fff;
+    }
+
+    .btn-apply:hover {
+      background: #0a58ca;
+    }
+
+
+    /* ------------------------------ */
+    /*         RESPONSIVE CSS         */
+    /* ------------------------------ */
+
+    @media (max-width: 768px) {
+      .job-card {
+        padding: 25px;
+        margin: 20px 15px;
+      }
+
+      .company-info {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .company-logo {
+        margin-bottom: 10px;
+      }
+
+      .action-buttons {
+        /* flex-direction: column; */
+        display: grid;
+        margin-left: 30%;
+        gap: 10px;
+        width: 30%!important;
+      }
+
+      .btn-back,
+      .btn-apply {
+        width: 100%;
+        max-width: 280px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .job-title {
+        font-size: 1.5rem;
+      }
+
+      .section-title {
+        font-size: 1.1rem;
+      }
+
+      .job-card {
+        margin-top: 15% !important;
+        padding: 18px;
+      }
+
+      
+    }
+  </style>
+</head>
+
+<body>
+
+  <%- include('navbar.ejs') %>
+
+  <div class="job-card">
+
+    <!-- Header -->
+    <div class="job-header">
+      <div class="company-info">
+        <img src="/company_logo/<%= job.company_logo %>" class="company-logo"
+          onerror="this.src='https://via.placeholder.com/90?text=Logo'">
+
+        <div>
+          <h2 class="job-title"><%= job.job_title %></h2>
+          <div class="company-name"><%= job.company_name %></div>
+          <div class="location-text"><i class="bi bi-geo-alt"></i> <%= job.company_location || "Not specified" %></div>
+        </div>
+      </div>
+
+      <span class="status-badge">
+        <i class="bi bi-<%= job.status === 'active' ? 'check-circle' : 'clock' %> me-1"></i>
+        <%= job.status.charAt(0).toUpperCase() + job.status.slice(1) %>
+      </span>
+    </div>
+
+
+    <!-- Job Description -->
+    <div class="section-title">Job Description</div>
+    <div class="desc-box"><%= job.job_description %></div>
+
+
+    <!-- Info Grid -->
+    <div class="section-title">Job Information</div>
+    <div class="info-grid">
+
+      <div class="info-item">
+        <i class="bi bi-briefcase info-icon"></i>
+        <strong>Type:</strong>&nbsp;<%= job.job_type %>
+      </div>
+
+      <div class="info-item">
+        <i class="bi bi-graph-up info-icon"></i>
+        <strong>Experience:</strong>&nbsp;<%= job.experience_min %> - <%= job.experience_max %> years
+      </div>
+
+      <div class="info-item">
+        <i class="bi bi-people info-icon"></i>
+        <strong>Vacancies:</strong>&nbsp;<%= job.vacancies %>
+      </div>
+
+      <% if (job.salary_range) { %>
+      <div class="info-item">
+        <i class="bi bi-currency-dollar info-icon"></i>
+        <strong>Salary:</strong>&nbsp;<%= job.salary_range %>
+      </div>
+      <% } %>
+
+      <% if (job.application_deadline) { %>
+      <div class="info-item">
+        <i class="bi bi-calendar-check info-icon"></i>
+        <strong>Deadline:</strong>&nbsp;<%= new Date(job.application_deadline).toLocaleDateString() %>
+      </div>
+      <% } %>
+
+    </div>
+
+
+    <!-- Skills -->
+    <div class="section-title">Required Skills</div>
+    <div class="skills-container">
+      <% if (job.skills) { job.skills.split(' ').forEach(skill => { %>
+      <span class="skill-tag"><%= skill %></span>
+      <% }) } else { %>
+      <span class="skill-tag">No skills mentioned</span>
+      <% } %>
+    </div>
+
+
+    <!-- Company Info -->
+    <div class="section-title">Company Information</div>
+    <div class="company-info-card">
+      <p><strong>Type:</strong> <%= job.company_type %></p>
+      <p><strong>Industry:</strong> <%= job.industry %></p>
+      <% if (job.website_url) { %>
+      <p><strong>Website:</strong> <a href="<%= job.website_url %>" target="_blank"><%= job.website_url %></a></p>
+      <% } %>
+    </div>
+
+
+   <div class="action-buttons">
+
+  <a href="/employees/view_saved_jobs" class="btn btn-back btn-secondary">
+    ← Back
+  </a>
+
+  <button onclick="apply_job('<%- job.job_id %>')" class="btn btn-apply btn-primary">
+    Apply Now
+  </button>
+  
+</div>
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="applyModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-3 rounded-4 shadow">
+
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-primary">Apply for Job</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <form action="/employees/apply_job" method="POST" enctype="multipart/form-data">
+          <div class="modal-body">
+
+            <input type="hidden" name="job_id" id="modalJobId">
+
+            <label class="fw-semibold">Full Name</label>
+            <input type="text" class="form-control mb-3" name="applicant_name" required>
+
+            <label class="fw-semibold">Email Address</label>
+            <input type="email" class="form-control mb-3" name="applicant_email" required>
+
+            <label class="fw-semibold">Upload Resume</label>
+            <input type="file" class="form-control" name="applicant_resume_file" required>
+          </div>
+
+          <div class="modal-footer border-0">
+            <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary">Submit Application</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <script>
+    function apply_job(job_id) {
+      $("#applyModal").modal("show");
+      $("#modalJobId").val(job_id);
+    }
+  </script>
+
+
+</body>
+</html>
+  <%- include('footer.ejs') %>

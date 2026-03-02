@@ -1,0 +1,209 @@
+<style>
+    :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --dark: #0f172a;
+        --dark-light: #1e293b;
+        --light: #f8fafc;
+        --border-radius: 8px;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background-color: var(--light);
+        padding: 20px;
+    }
+
+    footer {
+        background-color: var(--dark);
+        color: white;
+        padding: 20px 0 30px;
+        border-top: 4px solid var(--primary);
+        position: relative;
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center horizontally */
+        text-align: center;
+        padding: 0 10px !important;
+        gap: 40px;
+    }
+
+    .footer-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .footer-logo {
+        font-size: 32px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+    }
+
+    .footer-logo i {
+        color: var(--primary);
+        font-size: 28px;
+    }
+
+    .footer-tagline {
+        color: #cbd5e1;
+        line-height: 1.6;
+        max-width: 100%;
+
+    }
+
+    .footer-social {
+        display: flex;
+        gap: 15px;
+    }
+
+    .social-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: var(--dark-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #cbd5e1;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+        background-color: var(--primary);
+        color: white;
+        transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* gap: 10px; */
+        font-size: 14px;
+        color: #94a3b8;
+    }
+
+    .footer-bottom .footer-legal {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .footer-bottom .footer-legal a {
+        color: #94a3b8;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .footer-bottom .footer-legal a:hover {
+        color: white;
+    }
+
+    .heart {
+        color: #ef4444;
+        margin: 0 5px;
+    }
+
+    .back-to-top {
+        position: absolute;
+        right: 20px;
+        top: -20px;
+        background-color: var(--primary);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .back-to-top:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-3px);
+    }
+</style>
+
+<footer>
+    <div class="footer-container">
+        <!-- Brand Column -->
+        <div class="footer-column">
+            <a href="#" class="footer-logo">
+                <i class="fas fa-briefcase"></i>
+                 <span class="text-white">Job</span><span class="text-primary">Hyre</span>
+            </a>
+            <p class="footer-tagline">
+                Find Jobs. Hire Talent. All in One Place. <br>
+                The modern job portal connecting talent with opportunity. Find your dream job or perfect candidate today.
+            </p>
+            <div class="footer-social">
+                <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="copyright">
+                &copy; 2025 JobHyre. Designed with Vaibhav Garad <i class="fas fa-heart heart"></i>.
+            </div>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">Accessibility</a>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+</footer>
+
+<script>
+const backToTopBtn = document.querySelector('.back-to-top');
+backToTopBtn.addEventListener('click', e => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+window.addEventListener('scroll', () => {
+    if(window.scrollY > 300){
+        backToTopBtn.style.opacity = '1';
+        backToTopBtn.style.visibility = 'visible';
+    } else {
+        backToTopBtn.style.opacity = '0';
+        backToTopBtn.style.visibility = 'hidden';
+    }
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

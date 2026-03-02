@@ -1,0 +1,696 @@
+<%- include('navbar.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Profile</title>
+
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      color: #2c3e50;
+      min-height: 100vh;
+    }
+
+    .profile-photo {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #007BFF;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .profile-card {
+      background: #fff;
+      border-radius: 15px;
+      margin-top: 30px;
+      padding: 25px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-progress {
+      height: 10px;
+      border-radius: 10px;
+      background: #e9ecef;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-progress .progress-bar {
+      background: linear-gradient(90deg, #007BFF, #0056b3);
+      border-radius: 10px;
+      transition: width 0.6s ease;
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    }
+
+    .stats-box {
+      background: linear-gradient(145deg, #ffffff, #f8f9ff);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 123, 255, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stats-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #007BFF, #28a745);
+    }
+
+    .stats-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      border-color: #007BFF;
+    }
+
+    .stats-box h4 {
+      font-weight: 700;
+      font-size: 28px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #007BFF, #0056b3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stats-box p {
+      margin: 0;
+      color: #6c757d;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .job-card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .job-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #007BFF, #28a745);
+      border-radius: 15px 15px 0 0;
+    }
+
+    .job-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      border-color: rgba(0, 123, 255, 0.2);
+    }
+
+    .job-card .badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .job-card h5 {
+      margin: 0 0 10px 0;
+      font-weight: 700;
+      color: #2c3e50;
+      font-size: 1.25rem;
+    }
+
+    .job-card p {
+      color: #6c757d;
+      line-height: 1.5;
+    }
+
+    .job-card ul {
+      padding-left: 0;
+    }
+
+    .job-card .list-inline-item {
+      font-size: 14px;
+      color: #495057;
+    }
+
+    .job-card .list-inline-item i {
+      color: #007BFF;
+      margin-right: 5px;
+    }
+
+    .btn-apply {
+      background: linear-gradient(135deg, #007BFF, #0056b3);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-apply:hover {
+      background: linear-gradient(135deg, #0056b3, #004085);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+      color: white;
+    }
+
+    .btn-outline-secondary {
+      border-color: #6c757d;
+      color: #6c757d;
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+      background: #6c757d;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-primary {
+      border-color: #007BFF;
+      color: #007BFF;
+      font-weight: 600;
+      border-radius: 25px;
+      padding: 12px 24px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+      background: #007BFF;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    .complete_btn {
+      width: 50%;
+      margin-left: 30%;
+    }
+
+    /* Scrollable Job List */
+    .job-list-container {
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .quick-actions {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .quick-actions:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .quick-actions .btn {
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
+    }
+
+    .quick-actions .btn i {
+      font-size: 16px;
+      vertical-align: middle;
+    }
+
+    .quick-actions .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Scrollbar Styling */
+    .job-list-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .job-list-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .job-list-container::-webkit-scrollbar-thumb {
+      background: #007BFF;
+      border-radius: 10px;
+    }
+
+    .job-list-container::-webkit-scrollbar-thumb:hover {
+      background: #0056b3;
+    }
+
+    @media (max-width: 768px) {
+      .profile-card, .job-card {
+        padding: 20px;
+        margin-bottom: 15px;
+      }
+      
+      .stats-box h4 {
+        font-size: 24px;
+      }
+      
+      .job-card h5 {
+        font-size: 1.1rem;
+      }
+      
+      .btn-apply, .btn-outline-secondary {
+        padding: 8px 16px;
+        font-size: 13px;
+      }
+      
+      .complete_btn {
+        width: 80%;
+        margin-left: 10%;
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <div class="row g-4">
+      <!-- Left Profile Section -->
+      <div class="col-md-4">
+        <div class="profile-card fade-in">
+          <div class="text-center">
+            <div class="rounded-circle bg-light d-inline-block p-4 mb-3">
+              <img src="/employee_photo/<%= employee.employee_profile_photo %>" class="profile-photo" alt="Profile Photo" id="employee_profile_photo">
+            </div>
+            <h5 class="fw-semibold"><%-employee.employee_name%></h5>
+            <p class="text-muted mb-3">
+              <%-(employee.employee_current_designation) ? employee.employee_current_designation : 'Not Disclosed'%>
+            </p>
+          </div>
+
+         <div class="mb-4">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="d-flex align-items-center">
+      <span style="
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        box-shadow: 0 3px 8px rgba(245, 158, 11, 0.2);
+      ">
+        <i class="fas fa-user-check text-white" style="font-size: 12px;"></i>
+      </span>
+      <h6 class="mb-0" style="font-weight: 600; color: #1f2937;">
+        Profile Completion
+      </h6>
+    </div>
+    <div class="d-flex align-items-center">
+      <span class="badge" style="
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        box-shadow: 0 3px 8px rgba(16, 185, 129, 0.2);
+      ">
+        <%-profile_complete%>%
+      </span>
+    </div>
+  </div>
+  
+  <div class="progress" style="
+    height: 10px;
+    border-radius: 10px;
+    background: #f3f4f6;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  ">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+         role="progressbar" 
+         style="
+           width: <%-profile_complete%>%;
+           background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+           border-radius: 10px;
+           transition: width 1s ease-in-out;
+         "
+         aria-valuenow="<%-profile_complete%>" 
+         aria-valuemin="0" 
+         aria-valuemax="100">
+    </div>
+  </div>
+  
+  <div class="d-flex justify-content-between mt-2">
+    <small style="color: #6b7280; font-size: 12px;">
+      <i class="fas fa-info-circle me-1"></i>
+      Complete for full access
+    </small>
+    <small style="color: #6b7280; font-size: 12px;">
+      <% if(profile_complete < 100) { %>
+      <i class="fas fa-clock me-1"></i>
+      <%=100 - profile_complete%>% remaining
+      <% } else { %>
+      <i class="fas fa-check-circle text-success me-1"></i>
+      Complete
+      <% } %>
+    </small>
+  </div>
+</div>
+<% if (profile_complete < 100) { %>
+
+<!-- ======== YOUR EXISTING CODE (UNCHANGED) ======== -->
+<div class="mb-4" style="
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
+">
+  <div class="d-flex align-items-center mb-3">
+    <div style="
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    ">
+      <i class="fas fa-user-plus text-white fa-lg"></i>
+    </div>
+    <div>
+      <h6 style="color: #111827; font-weight: 700; margin-bottom: 4px;">
+        Complete Your Profile
+      </h6>
+      <p class="mb-0" style="color: #6b7280; font-size: 14px;">
+        Add details to enhance your employee experience
+      </p>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center">
+    <span style="color: #6b7280; font-size: 14px;">
+      <i class="fas fa-bolt text-warning me-1"></i>
+      Only 2 minutes to complete
+    </span>
+    <a href="/employees/edit_employee_profile" class="btn" style="
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: none;
+      transition: all 0.3s ease;
+    ">
+      <i class="fas fa-arrow-right me-2"></i>
+      Continue
+    </a>
+  </div>
+</div>
+<!-- ======== YOUR EXISTING CODE END ======== -->
+
+<% } else { %>
+
+<!-- ======== ONLY THIS MESSAGE WHEN 100% ======== -->
+<div class="mb-4 alert alert-success d-flex align-items-center"
+     style="border-radius: 12px; padding: 20px;">
+  <i class="fas fa-check-circle fa-2x me-3 text-success"></i>
+  <div>
+    <h6 class="mb-1 fw-bold">Profile Completed 🎉</h6>
+    <p class="mb-0" style="font-size: 14px;">
+      Your profile is 100% complete.
+    </p>
+  </div>
+</div>
+
+<% } %>
+
+
+        <!-- <div class="mb-4" style="
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
+">
+  <div class="d-flex align-items-center mb-3">
+    <div style="
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    ">
+      <i class="fas fa-user-plus text-white fa-lg"></i>
+    </div>
+    <div>
+      <h6 style="color: #111827; font-weight: 700; margin-bottom: 4px;">
+        Complete Your Profile
+      </h6>
+      <p class="mb-0" style="color: #6b7280; font-size: 14px;">
+        Add details to enhance your employee experience
+      </p>
+    </div>
+  </div> -->
+  
+
+  
+  <!-- <div class="d-flex justify-content-between align-items-center">
+    <span style="color: #6b7280; font-size: 14px;">
+      <i class="fas fa-bolt text-warning me-1"></i>
+      Only 2 minutes to complete
+    </span>
+    <a href="/employees/edit_employee_profile" class="btn" style="
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: none;
+      transition: all 0.3s ease;
+    ">
+      <i class="fas fa-arrow-right me-2"></i>
+      Continue
+    </a>
+  </div>
+</div> -->
+
+          <!-- Quick Actions Section -->
+          <div class="quick-actions">
+            <p class="fw-bold text-primary mb-3">Quick Actions</p>
+            <div class="d-grid gap-2">
+             <form id="resumeForm" action="/employees/update_employee_resume" method="POST" enctype="multipart/form-data">
+  <input type="file" id="resumeInput" name="resume_file" accept=".pdf,.doc,.docx" style="display: none;">
+  
+  <button type="button" class="btn btn-outline-primary w-100" id="uploadBtn">
+    <i class="bi bi-upload me-2"></i> Update Resume
+  </button>
+</form>
+
+<script>
+  // When the button is clicked, open the hidden file input
+  document.getElementById('uploadBtn').addEventListener('click', function() {
+    document.getElementById('resumeInput').click();
+  });
+
+  // When file is selected, automatically submit the form
+  document.getElementById('resumeInput').addEventListener('change', function() {
+    if (this.files.length > 0) {
+      document.getElementById('resumeForm').submit();
+    }
+  });
+</script>
+
+              <a href="/employees/view_saved_jobs">
+                <button class="btn btn-outline-success w-100">
+                  <i class="bi bi-bookmark-heart me-2"></i> Saved Jobs
+                </button>
+              </a>
+
+               <!-- Download Resume Button -->
+          
+              <a href="/employee_resume/<%= employee.employee_resume %>" class="btn btn-outline-success" download>
+                <i class="bi bi-download"></i> Download Resume
+              </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Job Recommendations -->
+      <div class="col-md-8">
+        <h5 class="fw-bold mb-3 mt-5 text-primary">Recommended For You</h5>
+`
+        <!-- Scrollable Job List -->
+        <div class="job-list-container">
+          <% for(var i = 0; i < recent_jobs.length; i++) { %>
+            <div class="job-card fade-in">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5><%- recent_jobs[i].job_title %></h5>
+                <span class="badge bg-success"><%- recent_jobs[i].status %></span>
+              </div>
+              <p class="mb-1 text-muted text-primary  " ><%- recent_jobs[i].company_name %></p>
+              <ul class="list-inline small text-muted mb-2">
+                <li class="list-inline-item">
+                  <i class="bi bi-geo-alt"></i> <%- recent_jobs[i].location %>
+                </li>
+                <li class="list-inline-item">
+                  <i class="bi bi-briefcase"></i> <%- recent_jobs[i].job_type %>
+                </li>
+                <li class="list-inline-item">
+                  <i class="bi bi-currency-dollar"></i> <%- recent_jobs[i].salary_range %>
+                </li>
+                <li class="list-inline-item">
+                  <i class="bi bi-code-slash"></i> <%- recent_jobs[i].skills %>
+                </li>
+                <li class="list-inline-item">
+                  Created: <%- new Date(recent_jobs[i].created_at).toLocaleDateString() %>
+                </li>
+              </ul>
+              <p class="text-muted">
+                <%- recent_jobs[i].job_description %>
+              </p>
+             <div class="d-flex justify-content-end gap-2">
+ <% if (recent_jobs[i].saved_jobs_count > 0) { %>
+  <!-- Job already saved -->
+  <button disabled class="btn btn-secondary btn-sm">Saved</button>
+<% } else { %>
+  <!-- Job not saved yet -->
+  <a href="/employees/save_job/<%- recent_jobs[i].job_id %>">
+    <button class="btn btn-outline-secondary btn-sm">Save</button>
+  </a>
+<% } %>
+
+
+  <% if (recent_jobs[i].application_count > 0) { %>
+    <!-- Job already applied -->
+    <button disabled class="btn btn-secondary btn-sm btn-apply">Applied</button>
+  <% } else { %>
+    <!-- Job not applied yet -->
+    <button onclick="apply_job('<%- recent_jobs[i].job_id %>')" class="btn btn-primary btn-sm btn-apply">Apply Now</button>
+  <% } %>
+</div>
+
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Apply Job Modal -->
+<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3 rounded-4 shadow">
+      
+      <!-- Modal Header -->
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold text-primary" id="applyModalLabel">Apply for Job</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Modal Form -->
+      <form action="/employees/apply_job" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" name="job_id" id="modalJobId">
+
+          <div class="mb-3">
+            <label for="applicantName" class="form-label fw-semibold">Enter Your Name</label>
+            <input type="text" class="form-control" id="applicantName" name="applicant_name" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="applicantEmail" class="form-label fw-semibold">Enter Your Email</label>
+            <input type="email" class="form-control" id="applicantEmail" name="applicant_email" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="resumeFile" class="form-label fw-semibold">Upload Resume</label>
+            <input type="file" class="form-control" id="resumeFile" name="applicant_resume_file" accept=".pdf,.doc,.docx" required>
+            <small class="text-muted">Accepted formats: .pdf, .doc, .docx</small>
+          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+ <!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+  function apply_job(job_id) {
+    // Open modal properly using correct selector
+    $('#applyModal').modal('show');
+
+    // Set job ID in hidden input (optional but useful)
+    $('#modalJobId').val(job_id);
+  }
+</script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</body>
+</html>
+<%- include('footer.ejs') %>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employer Portal</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f7fa;
+  }
+
+  /* Navbar */
+  .navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 0.6rem 2rem;
+    margin-bottom: 0; 
+  }
+
+  .navbar-brand img {
+    width: 110px;
+  }
+
+  .nav-link {
+    color: #333 !important;
+    font-weight: 200;
+    margin-right: 18px;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0%;
+    height: 3px;
+    background-color: #ff5630;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+  }
+
+  .nav-link:hover {
+    color: #0073e6 !important;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .btn-login, .btn-employer {
+    border: 1px solid #0073e6;
+    color: #0073e6;
+    font-weight: 400 !important;
+  }
+
+  .btn-employer{
+    margin-right: 30px!important;
+    margin-bottom: 10px!important;
+  }
+
+ 
+
+  .btn-register {
+    background-color: #ff5630;
+    color: white;
+    font-weight: 400 !important;
+  }
+
+  .btn-register:hover {
+    background-color: #e94c25;
+  }
+
+  /* Modal Styling */
+  .modal-content {
+    border: none;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    animation: modalPop 0.5s ease;
+  }
+
+  @keyframes modalPop {
+    from {transform: translateY(-20px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+  }
+
+  .tab-buttons {
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(90deg, #0072ff, #00c6ff);
+  }
+
+  /* ✅ Black border for active (present) tab */
+.tab-buttons button.active {
+border-bottom: 3px solid #1e40af !important;
+  color: #ffffff !important;
+}
+
+
+  .tab-buttons button {
+    flex: 1;
+    padding: 15px 0;
+    border: none;
+    background: none;
+    font-weight: 600;
+    color: #e2e8f0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+  }
+
+  .tab-buttons button.active {
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+    border-bottom: 3px solid #fff;
+  }
+
+  .modal-body {
+    padding: 35px 40px;
+    background: #fff;
+  }
+
+  .modal-body h5 {
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .form-control {
+    border-radius: 12px;
+    padding: 12px 15px;
+    /* border: 1px solid #105bcd; */
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 0;
+    font-weight: 600;
+  }
+
+  .register-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+  }
+
+  @media (max-width: 768px) {
+    .register-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .content-wrapper {
+    margin-top: 30px;
+    padding: 20px;
+  }
+  .buttons{
+    font-size: 40px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <span class="text-primary fw-bolder fs-3">Job</span><span class="text-dark fw-bolder fs-3">Hyre</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <div class="d-flex buttons align-items-center mt-2 mt-lg-0 mr-1 ms-auto">
+        <!-- Employee Login button removed -->
+        <button class="btn btn-register  me-1 dropdown-toggle" id="employeeRegisterBtn">For Employees</button>
+        <div class="dropdown">
+          <button class="btn btn-employer buttons btn-primary dropdown-toggle" type="button" id="employerMenu" aria-expanded="false">
+            For employers
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="content-wrapper">
+  <!-- Page content -->
+</div>
+
+<!-- Employer Modal -->
+<div class="modal fade" id="employerModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content shadow-lg">
+      <div class="tab-buttons">
+        <button class="active " id="tabLogin">Log in</button>
+        <button id="tabRegister">Register</button>
+      </div>
+      <div class="modal-body">
+        <form id="loginForm" action="/save_company_login" method="post">
+          <h5>Welcome Back, Login Comany</h5>
+          <input type="email" class="form-control mb-3" placeholder="Company Email" name="company_email">
+          <input type="password" class="form-control mb-3" placeholder="Password" name="company_password">
+          <button type="submit" class="btn btn-primary w-100">Log in</button>
+        </form>
+        <form id="registerForm" style="display: none;" action="/save_company_register" method="post">
+          <h5>Create Company Account</h5>
+          <div class="register-grid">
+            <input type="text" class="form-control" placeholder="Company Name" name="company_name" required>
+            <input type="text" class="form-control" placeholder="Company Location" name="company_location" required>
+            <input type="text" class="form-control" placeholder="HR Name" name="hr_name">
+            <input type="text" class="form-control" placeholder="HR Designation" name="hr_designation">
+            <input type="text" class="form-control" placeholder="HR Mobile" name="hr_mobile">
+            <input type="email" class="form-control" placeholder="Company Email" name="company_email">
+            <input type="password" class="form-control" placeholder="Create Password" name="company_password">
+          </div>
+          <button type="submit" class="btn btn-primary w-100 mt-4">Register Company</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Employee Modal -->
+<div class="modal fade" id="employeeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content shadow-lg">
+      <div class="tab-buttons">
+        <button class="active" id="empTabLogin">Login</button>
+        <button id="empTabRegister" >Register</button>
+      </div>
+      <div class="modal-body">
+        <!-- Employee Login -->
+        <form id="empLoginForm" action="/employee_login" method="post">
+          <h5>Welcome Back,  Login Employee</h5>
+          <input type="email" class="form-control mb-3" placeholder="Enter your Email" name="employee_email" required>
+          <input type="password" class="form-control mb-3" placeholder="Enter your Password" name="employee_password" required>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        <!-- Employee Register -->
+        <form id="empRegisterForm" action="/save_employee" method="post" style="display:none;">
+          <h5>Create Employee Account</h5>
+          <div class="register-grid">
+            <input type="text" class="form-control" placeholder="Full Name" name="employee_name" required>
+            <input type="email" class="form-control" placeholder="Email" name="employee_email" required>
+            <input type="text" class="form-control" placeholder="Mobile Number" name="employee_mobile" required>
+            <input type="password" class="form-control" placeholder="Create Password" name="employee_password" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 mt-4">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Employer Modal
+  document.getElementById('employerMenu').addEventListener('click', function () {
+    new bootstrap.Modal(document.getElementById('employerModal')).show();
+  });
+  const tabLogin = document.getElementById('tabLogin');
+  const tabRegister = document.getElementById('tabRegister');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  tabLogin.addEventListener('click', () => {
+    tabLogin.classList.add('active'); tabRegister.classList.remove('active');
+    loginForm.style.display='block'; registerForm.style.display='none';
+  });
+  tabRegister.addEventListener('click', () => {
+    tabRegister.classList.add('active'); tabLogin.classList.remove('active');
+    registerForm.style.display='block'; loginForm.style.display='none';
+  });
+
+  // Employee Modal
+  const empRegisterBtn = document.getElementById('employeeRegisterBtn');
+  const empTabLogin = document.getElementById('empTabLogin');
+  const empTabRegister = document.getElementById('empTabRegister');
+  const empLoginForm = document.getElementById('empLoginForm');
+  const empRegisterForm = document.getElementById('empRegisterForm');
+  const empModal = new bootstrap.Modal(document.getElementById('employeeModal'));
+
+  empRegisterBtn.addEventListener('click', () => {
+    empTabRegister.classList.add('active'); 
+    empTabLogin.classList.remove('active');
+    empRegisterForm.style.display='block'; 
+    empLoginForm.style.display='none';
+    empModal.show();
+  });
+
+  empTabLogin.addEventListener('click', () => {
+    empTabLogin.classList.add('active'); empTabRegister.classList.remove('active');
+    empLoginForm.style.display='block'; empRegisterForm.style.display='none';
+  });
+  empTabRegister.addEventListener('click', () => {
+    empTabRegister.classList.add('active'); empTabLogin.classList.remove('active');
+    empRegisterForm.style.display='block'; empLoginForm.style.display='none';
+  });
+</script>
+</body>
+</html>

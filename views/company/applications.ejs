@@ -1,0 +1,64 @@
+<%- include('navbar.ejs') %>
+<style>
+    .container
+    {
+        margin-top: 80px;
+        
+    }
+</style>
+<div class="container ">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body">
+            <a href="/company/view_post_jobs" class="btn btn-outline-primary mb-3 rounded-pill px-4">
+                ← Back
+            </a>
+
+            <h2 class="text-center mb-4" style="font-weight:700; letter-spacing:0.5px; color:#333;">
+                Job Applications
+            </h2>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="bg-light text-dark">
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Applicant Name</th>
+                            <th>Email</th>
+                            <th>Applied On</th>
+                            <th>Resume</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i=0; i<applications.length; i++){ %>
+                        <tr>
+                            <td><%= i+1 %></td>
+                            <td class="fw-semibold"><%= applications[i].applicant_name %></td>
+                            <td><%= applications[i].applicant_email %></td>
+                            <td><%= new Date(applications[i].applied_at).toLocaleDateString() %></td>
+                            <td>
+                                <a href="/employee_resume/<%= applications[i].applicant_resume_file %>" download
+                                   class="btn btn-sm btn-outline-success rounded-pill px-3">
+                                   Download
+                                </a>
+                            </td>
+                            <td>
+                                <% if(applications[i].status == 'pending'){%>
+                                    <a href="/company/shortlist_applicant/<%=applications[i].application_id%>" class="btn btn-sm btn-primary rounded-pill px-3">Shortlist</a>
+                                    <a href="/company/reject_applicant/<%=applications[i].application_id%>" class="btn btn-sm btn-danger rounded-pill px-3 ms-2">Reject</a>
+                                <% } else if(applications[i].status == 'Shortlisted'){ %>
+                                    <a href="" class="btn btn-sm btn-success rounded-pill px-3">Shortlisted</a>
+                                <%} else if(applications[i].status == 'Rejected'){ %>
+                                    <a href="" class="btn btn-sm btn-danger rounded-pill px-3">Rejected</a>
+                                <% } %>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('footer.ejs') %>

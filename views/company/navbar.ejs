@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobHyre </title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2c78e4;
+      --primary-dark: #1a5bbd;
+      --secondary: #2c3e50;
+      --accent: #00b8d4;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --gradient: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f5f7f9;
+      color: var(--dark);
+    }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Poppins', sans-serif; font-weight:700; color:var(--secondary); }
+    .navbar-brand i { color: var(--primary); margin-right: 5px; margin-left: 10px; }
+    .nav-link { color: #555; font-weight:500; margin-left: 20px; }
+    .nav-link.active { color: var(--primary); font-weight:600; }
+    .user-avatar { width: 35px; height: 35px; border-radius:50%; object-fit:cover; border:2px solid var(--primary); }
+    .card { border-radius: 15px; }
+    .card:hover { transform: translateY(-5px); transition: 0.3s; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+
+    
+  </style>
+  <style>
+.logout-btn {
+    border-radius: 0.5rem;
+    padding: 0.4rem 1rem;
+    margin-right: 10px;
+    font-weight: 500;
+    color: #fff; /* white text */
+    background-color: #1f5bd4; /* Bootstrap danger red */
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    list-style-type: none;
+}
+
+@media (max-width: 768px) {
+    .nav-link {
+        margin-right: 100px!important;
+    }
+}
+
+.logout-btn:hover {
+    background-color: #f80505; /* darker red on hover */
+    transform: translateX(3px); /* subtle move */
+    text-decoration: none;
+}
+
+.logout-btn i {
+    transition: transform 0.3s;
+}
+
+.logout-btn:hover i {
+    transform: rotate(-20deg);
+}
+
+/* ===== Media Queries ===== */
+
+/* Mobile: screens less than 576px */
+@media (max-width: 575.98px) {
+    .logout-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        margin-right: 5px;
+    }
+
+    .logout-btn i {
+        font-size: 0.9rem;
+    }
+}
+
+/* Tablet: screens 576px to 991px */
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .logout-btn {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.95rem;
+    }
+
+    .logout-btn i {
+        font-size: 1rem;
+    }
+}
+
+/* Desktop: 992px and above */
+@media (min-width: 992px) {
+    .logout-btn {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+
+    .logout-btn i {
+        font-size: 1.1rem;
+    }
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- Fixed Top Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-3 fixed-top">
+  <a class="navbar-brand d-flex align-items-center" href="#">
+    <i class="fas fa-hospital" ></i> <span class="ms-1 fs-3 fw-bolder text-primary" id="companyName">Company</span>
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarResponsive">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link active" href="/company">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/company/company_profile">Company Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/company/post_new_jobs">Post New Jobs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/company/view_post_jobs">View Post Jobs</a>
+      </li>
+    </ul>
+<li>
+  <a href="/company/company_logout" class="btn btn-primary logout-btn w-100 d-flex align-items-center justify-content-center">
+    <i class="fas fa-sign-out-alt me-2"></i> Logout
+  </a>
+</li>
+
+  </div>
+
+   
+</nav>
+
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script>
+  $.ajax({
+    url:'/company/company_data',
+    method:'get',
+    
+    success:function(res){
+      $('#companyName').html(res.company_name);
+      $('#companyName').html(res.company_name);
+      $('#staffPhoto').attr('src','/public/company_logo/'+res.company_logo);
+    }
+  })
+</script> 

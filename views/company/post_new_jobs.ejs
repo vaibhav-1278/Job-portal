@@ -1,0 +1,375 @@
+<%- include('navbar.ejs') %>
+
+
+<div class="container mt-5 " >
+  <div class="card shadow-lg border-0 animated-card mt-2">
+    <div class="card-header bg-gradient text-white">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fas fa-briefcase me-2"></i>Post New Job</h4>
+        <span class="badge bg-light text-primary fs-6">Create Opportunity</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <form action="/company/save_new_jobs" method="post" class="row g-4">
+
+        <!-- Job Title -->
+        <div class="col-md-6">
+          <label for="job_title" class="form-label fw-semibold text-primary">Job Title <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fas fa-heading text-muted"></i>
+            </span>
+            <input type="text" name="job_title" id="job_title" class="form-control form-control-hover border-start-0" placeholder="Enter job title here" required>
+          </div>
+          <div class="form-text text-muted">Be specific about the role and seniority level</div>
+        </div>
+
+        <!-- Job Description -->
+        <div class="col-md-6">
+          <label for="job_description" class="form-label fw-semibold text-primary">Job Description <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-text bg-light align-items-start pt-3 border-end-0">
+              <i class="fas fa-file-alt text-muted"></i>
+            </span>
+            <textarea name="job_description" id="job_description" class="form-control form-control-hover border-start-0" placeholder="Describe the role, responsibilities, and what makes this position exciting..." rows="3" required></textarea>
+          </div>
+          <div class="form-text text-muted">Briefly describe key responsibilities and expectations</div>
+        </div>
+
+        <!-- Job Type -->
+        <div class="col-md-4">
+          <label for="job_type" class="form-label fw-semibold text-primary">Job Type <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fas fa-business-time text-muted"></i>
+            </span>
+            <select name="job_type" id="job_type" class="form-select form-control-hover border-start-0" required>
+              <option value="">Select job type</option>
+              <option value="full_time">Full-Time</option>
+              <option value="part-time">Part-Time</option>
+              <option value="internship">Internship</option>
+              <option value="contract">Contract</option>
+              <option value="remote">Remote</option>
+            </select>
+          </div>
+          <div class="form-text text-muted">Choose the employment type</div>
+        </div>
+
+        <!-- Experience Min -->
+        <div class="col-md-4">
+          <label for="experience_min" class="form-label fw-semibold text-primary">Minimum Experience</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fas fa-chart-line text-muted"></i>
+            </span>
+            <input type="number" name="experience_min" id="experience_min" class="form-control form-control-hover border-start-0" min="0" placeholder="0">
+            <span class="input-group-text bg-light border-start-0">Years</span>
+          </div>
+          <div class="form-text text-muted">Minimum years of experience required</div>
+        </div>
+
+        <!-- Experience Max -->
+        <div class="col-md-4">
+          <label for="experience_max" class="form-label fw-semibold text-primary">Maximum Experience</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fas fa-chart-bar text-muted"></i>
+            </span>
+            <input type="number" name="experience_max" id="experience_max" class="form-control form-control-hover border-start-0" min="0" placeholder="0">
+            <span class="input-group-text bg-light border-start-0">Years</span>
+          </div>
+          <div class="form-text text-muted">Maximum years of experience preferred</div>
+        </div>
+
+        <!-- Skills -->
+        <div class="col-md-6">
+          <label for="skills" class="form-label fw-semibold text-primary">Skills Required</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fas fa-tools text-muted"></i>
+            </span>
+            <input type="text" name="skills" id="skills" class="form-control form-control-hover border-start-0" placeholder="E.g., PHP, Nodejs, JavaScript">
+          </div>
+          <div class="form-text text-muted">Separate skills with commas</div>
+        </div>
+
+        <!-- Vacancies -->
+        <div class="col-md-6">
+          <label for="vacancies" class="form-label fw-semibold text-primary">Number of Vacancies</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+              <i class="fas fa-users text-muted"></i>
+            </span>
+            <input type="number" name="vacancies" id="vacancies" class="form-control form-control-hover border-start-0" min="1" value="1">
+            <span class="input-group-text bg-light border-start-0">Positions</span>
+          </div>
+          <div class="form-text text-muted">Number of available positions</div>
+        </div>
+
+        <!-- Additional Fields (Optional) -->
+        <div class="col-12">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <button type="button" class="btn btn-sm btn-outline-primary" id="toggleAdditionalFields">
+              <i class="fas fa-plus me-1"></i> Show More
+            </button>
+          </div>
+
+
+        
+              <div class="row g-4" id="additionalFields" style="display: none;">
+            <div class="col-md-6">
+              <label for="salary_range" class="form-label fw-semibold text-primary">Salary Range</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0">
+                  <i class="fas fa-money-bill-wave text-muted"></i>
+                </span>
+                <input type="text" name="salary_range" id="salary_range" class="form-control form-control-hover border-start-0" placeholder="E.g., $60,000 - $80,000">
+              </div>
+            </div>
+             <div class="col-md-6">
+              <label for="salary_range" class="form-label fw-semibold text-primary">Job Location</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0">
+                  <i class="fas fa-money-bill-wave text-muted"></i>
+                </span>
+                <input type="text" name="job_location" id="job_location" class="form-control form-control-hover border-start-0" placeholder="E.g., New York, NY or Remote" required >
+              </div>
+            </div>  
+            <div class="col-md-6">
+              <label for="application_deadline" class="form-label fw-semibold text-primary">Application Deadline</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0">
+                  <i class="fas fa-calendar-alt text-muted"></i>
+                </span>
+                <input type="date" name="application_deadline" id="application_deadline" class="form-control form-control-hover border-start-0">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-12 text-end mt-4">
+          <button type="reset" class="btn btn-outline-secondary px-4 py-2 me-3">
+            <i class="fas fa-redo me-2"></i> Reset
+          </button>
+          <button type="submit" class="btn btn-gradient px-5 py-2 animated-btn">
+            <i class="fas fa-paper-plane me-2"></i> Post Job
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<style>
+/* Enhanced Gradient card header */
+.bg-gradient {
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  padding: 1.5rem 2rem;
+}
+
+/* Enhanced Card shadow & animation */
+.animated-card {
+  border-radius: 15px;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideFadeIn 0.8s forwards;
+  border: none;
+  overflow: hidden;
+}
+
+@keyframes slideFadeIn {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Enhanced Gradient button */
+.btn-gradient {
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+  color: white;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(44, 62, 80, 0.4);
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+}
+
+.btn-gradient:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.btn-gradient:hover:after {
+  animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+
+/* Enhanced Input hover & focus animation */
+.form-control-hover {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem 1rem;
+}
+
+.form-control-hover:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+  transform: translateY(-2px);
+}
+
+.input-group-text {
+  transition: all 0.3s ease;
+  border-radius: 8px 0 0 8px;
+}
+
+.form-control-hover:focus + .input-group-text,
+.form-control-hover:focus ~ .input-group-text {
+  border-color: #3498db;
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+/* Button animation on load */
+.animated-btn {
+  animation: popIn 0.8s ease forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Form label styling */
+.form-label {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Additional styling for better visual hierarchy */
+.card-body {
+  padding: 2.5rem;
+}
+
+.input-group {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .bg-gradient {
+    padding: 1.25rem 1.5rem;
+  }
+  
+  .col-12.text-end {
+    text-align: center !important;
+  }
+  
+  .col-12.text-end .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+/* Styling for the additional fields toggle */
+#toggleAdditionalFields {
+  transition: all 0.3s ease;
+}
+
+#additionalFields {
+  transition: all 0.5s ease;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Badge styling */
+.badge {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Toggle additional fields
+  const toggleBtn = document.getElementById('toggleAdditionalFields');
+  const additionalFields = document.getElementById('additionalFields');
+  
+  toggleBtn.addEventListener('click', function() {
+    if (additionalFields.style.display === 'none') {
+      additionalFields.style.display = 'flex';
+      toggleBtn.innerHTML = '<i class="fas fa-minus me-1"></i> Show Less';
+    } else {
+      additionalFields.style.display = 'none';
+      toggleBtn.innerHTML = '<i class="fas fa-plus me-1"></i> Show More';
+    }
+  });
+  
+  // Form validation enhancement
+  const form = document.querySelector('form');
+  const requiredFields = form.querySelectorAll('[required]');
+  
+  requiredFields.forEach(field => {
+    field.addEventListener('blur', function() {
+      if (!this.value.trim()) {
+        this.classList.add('is-invalid');
+      } else {
+        this.classList.remove('is-invalid');
+      }
+    });
+  });
+  
+  // Auto-format skills input
+  const skillsInput = document.getElementById('skills');
+  skillsInput.addEventListener('blur', function() {
+    if (this.value) {
+      // Capitalize first letter of each skill and remove extra spaces
+      const skills = this.value.split(',').map(skill => {
+        return skill.trim().charAt(0).toUpperCase() + skill.trim().slice(1);
+      });
+      this.value = skills.join(', ');
+    }
+  });
+});
+</script>
+<%- include('footer.ejs') %>

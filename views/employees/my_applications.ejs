@@ -1,0 +1,97 @@
+<%-include('navbar.ejs')%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>applications</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<style>
+body { background: #f1f5f9; }
+.job-section { max-width: 1100px; margin: 90px auto 30px auto; }
+.job-list-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 25px; }
+.job-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
+  transition: 0.25s ease;
+}
+.job-card:hover { transform: translateY(-6px); box-shadow: 0px 10px 25px rgba(0,0,0,0.12); }
+.company-name { font-weight: 600; font-size: 15px; color: #1e40af; }
+.job-title { font-size: 20px; font-weight: 700; color: #0f172a; }
+.job-info li { margin-right: 12px; font-size: 13px; color: #475569; }
+.btn-small { padding: 6px 16px; border-radius: 8px; font-size: 13px; }
+.job-desc { height: 55px; overflow: hidden; color: #64748b; }
+</style>
+</head>
+
+<body>
+
+<div class="container job-section mb-5">
+  <h4 class="fw-bolder mb-4 text-center text-primary">My Applications</h4>
+
+  <div class="job-list-grid">
+
+  <% if (applications && applications.length > 0) { %>
+
+    <% applications.forEach(job => { %>
+      <% ap_data.forEach(ap_status => { %>
+
+        <% if (job.job_id === ap_status.job_id) { %>
+
+        <div class="job-card">
+
+          <h5 class="job-title"><%= job.job_title %></h5>
+          <p class="company-name"><i class="bi bi-building"></i> <%= job.company_name %></p>
+
+          <ul class="list-inline job-info mb-2">
+            <li class="list-inline-item"><i class="bi bi-geo-alt"></i> <%= job.job_location %></li>
+            <li class="list-inline-item"><i class="bi bi-briefcase"></i> <%= job.job_type %></li>
+            <li class="list-inline-item"><i class="bi bi-currency-rupee"></i> <%= job.salary_range %></li>
+            <li class="list-inline-item"><i class="bi bi-code-slash"></i> <%= job.skills %></li>
+            <li class="list-inline-item">Posted: <%= new Date(job.created_at).toLocaleDateString() %></li>
+          </ul>
+
+          <p class="job-desc"><%= job.job_description %></p>
+
+          <div class="d-flex justify-content-end gap-2 mt-2">
+
+            <a href="/employees/application_details/<%= job.job_id %>"
+               class="btn btn-primary btn-small">View</a>
+
+            <% if (ap_status.status === 'pending') { %>
+              <button disabled class="btn btn-warning btn-small">Pending</button>
+            <% } else if (ap_status.status === 'Rejected') { %>
+              <button disabled class="btn btn-danger btn-small">Rejected</button>
+            <% } else { %>
+              <button disabled class="btn btn-small" style="background:#6f42c1; color:#fff;">
+                Shortlisted
+              </button>
+            <% } %>
+
+          </div>
+
+        </div>
+
+        <% } %>
+      <% }) %>
+    <% }) %>
+
+  <% } else { %>
+
+    <p class="text-center fw-bold text-primary mt-3">No applications Found</p>
+
+  <% } %>
+
+  </div>
+</div>
+
+<%- include('footer.ejs') %>
+</body>
+</html>

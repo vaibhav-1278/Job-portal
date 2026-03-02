@@ -1,0 +1,147 @@
+<%-include('navbar.ejs')%>
+<h1>edit post jobs</h1>
+
+<div class="container mt-5">
+  <div class="card shadow-lg border-0 animated-card">
+    <div class="card-header bg-gradient text-white">
+      <h4 class="mb-0"><i class="fas fa-briefcase me-2"></i>Post New Job</h4>
+    </div>
+    <div class="card-body">
+      <form action="/company/update_post_jobs" method="post" class="row g-4">
+
+          <div class="col-md-6">
+          <label for="job_title" class="form-label">Job id</label>
+          <input type="text" name="job_id" id="job_id" class="form-control form-control-hover" value="<%=job.job_id%>">
+        </div>
+        <!-- Job Title -->
+        <div class="col-md-6">
+          <label for="job_title" class="form-label">Job Title</label>
+          <input type="text" name="job_title" id="job_title" class="form-control form-control-hover" value="<%=job.job_title%>">
+        </div>
+
+        <!-- Job Description -->
+        <div class="col-md-6">
+          <label for="job_description" class="form-label">Job Description</label>
+          <textarea name="job_description" id="job_description" class="form-control form-control-hover"  rows="3" value=""><%=job.job_description%></textarea>
+        </div>
+
+        <!-- Job Type -->
+        <div class="col-md-4">
+          <label for="job_type" class="form-label">Job Type</label>
+         <select name="job_type" id="job_type" class="form-select form-control-hover">
+  <option value="">Select job type</option>
+  <option value="full_time" <%= job.job_type == 'full_time' ? 'selected' : '' %>>Full-Time</option>
+  <option value="part-time" <%= job.job_type == 'part-time' ? 'selected' : '' %>>Part-Time</option>
+  <option value="internship" <%= job.job_type == 'internship' ? 'selected' : '' %>>Internship</option>
+  <option value="contract" <%= job.job_type == 'contract' ? 'selected' : '' %>>Contract</option>
+  <option value="remote" <%= job.job_type == 'remote' ? 'selected' : '' %>>Remote</option>
+</select>
+
+        </div>
+
+        <!-- Experience Min -->
+        <div class="col-md-4">
+          <label for="experience_min" class="form-label">Minimum Experience (Years)</label>
+          <input type="number" name="experience_min" id="experience_min" class="form-control form-control-hover" min="0" placeholder="0" value="<%=job.experience_min%>"> 
+        </div>
+
+        <!-- Experience Max -->
+        <div class="col-md-4">
+          <label for="experience_max" class="form-label">Maximum Experience (Years)</label>
+          <input type="number" name="experience_max" id="experience_max" class="form-control form-control-hover" min="0" placeholder="0" value="<%=job.experience_max%>">
+        </div>
+
+        <!-- Skills -->
+        <div class="col-md-6">
+          <label for="skills" class="form-label"></label>
+          <input type="text" name="skills" id="skills" class="form-control form-control-hover" placeholder="E.g. JavaScript, PHP, React" value="<%=job.skills%>">
+        </div>
+
+        <!-- Vacancies -->
+        <div class="col-md-6">
+          <label for="vacancies" class="form-label">Number of Vacancies</label>
+          <input type="number" name="vacancies" id="vacancies" class="form-control form-control-hover" min="1" value="<%=job.vacancies%>">
+        </div>
+
+        <div class="col-md-6">
+          <label for="salary_range" class="form-label">Salary Range</label>
+          <input type="text" name="salary_range" id="salary_range" class="form-control form-control-hover"  value="<%=job.salary_range%>">
+        </div>
+        <!-- Application Deadline -->
+        <div class="col-md-6">
+          <label for="application_deadline" class="form-label">Application Deadline</label>
+      <input type="date" name="application_deadline" id="application_deadline" class="form-control form-control-hover" 
+       value="<%= job.application_deadline ? job.application_deadline.toISOString().split('T')[0] : '' %>">
+
+        <!-- Submit Button -->
+        <div class="col-12 text-end">
+          <button type="submit" class="btn btn-gradient px-5 py-2 animated-btn">
+            <i class="fas fa-paper-plane me-2"></i> Update Job
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('footer.ejs') %>
+
+<style>
+/* Gradient card header */
+.bg-gradient {
+  background: linear-gradient(135deg, #2c78e4, #00b8d4);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+/* Card shadow & animation */
+.animated-card {
+  border-radius: 15px;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideFadeIn 0.8s forwards;
+}
+
+@keyframes slideFadeIn {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Gradient button */
+.btn-gradient {
+  background: linear-gradient(135deg, #2c78e4, #00b8d4);
+  color: white;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(44, 120, 228, 0.4);
+}
+
+/* Input hover & focus animation */
+.form-control-hover {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.form-control-hover:focus {
+  border-color: #2c78e4;
+  box-shadow: 0 0 8px rgba(44, 120, 228, 0.3);
+}
+
+/* Button animation on load */
+.animated-btn {
+  animation: popIn 0.8s ease forwards;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+</style>
+
+<%-include('footer.ejs')%>
